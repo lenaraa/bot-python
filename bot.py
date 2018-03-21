@@ -19,4 +19,4 @@ async def ping(ctx):
 
 
 
-client.run("NDI0MzMyNTg1MDQ5NTIyMTc2.DY3WIA.sj6epSfdz4nqadKqOekpAWGGbZA");
+client.run("token");
