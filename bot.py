@@ -9,7 +9,7 @@ from tokens import token
 
 client = discord.Client()
 bot_prefix="!"
-bot = commands.Bot(command_prefix=bot_prefix)
+bot = Bot(command_prefix=bot_prefix)
 
 @bot.event
 async def on_ready():
