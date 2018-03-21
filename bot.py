@@ -1,4 +1,9 @@
+# CuteBot by Lenaraa
+
 import discord
+import random
+import asyncio
+from tokens import token
 from discord.ext.commands import Bot
 from discord.ext import commands
 
@@ -16,7 +21,10 @@ async def on_ready():
 async def ping(ctx):
     await client.say("Pong !")
 
-
+@client.command(pass_context=True)
+async def cute(ctx):
+    await client.say("image")
+    #await client.say(random.randrange(100))
 
 
 client.run("token");
