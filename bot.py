@@ -31,6 +31,21 @@ async def cute(ctx):
     img = random.choice(l)
     with open("./pic/" + img, 'rb') as f:
         await bot.send_file(ctx.message.channel, f)
+        
+        
+@bot.command(pass_context=True,
+             name='joke',
+             description="Envoie une ligne au hasard parmis le fichier joke.txt",
+             brief="Envoie une blague carambar",
+             aliases=['blague', 'carambar'])
+async def joke(ctx):
+    liste = []
+    with open('joke.txt', 'r') as f :
+        for l in f.readlines() :
+            liste.append(l)
+        f.close()
+    l = random.choice(liste)
+    await bot.say(l)
 
 
 @bot.command(name='ping',
