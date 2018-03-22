@@ -12,26 +12,25 @@ import os
 bot_prefix=("!", "?")
 bot = Bot(command_prefix=bot_prefix)
 
+
+#Message dans le terminal quand on lance le bot
 @bot.event
 async def on_ready():
     print("Bot online !")
     print("Name : {}".format(bot.user.name))
     print("ID : {}".format(bot.user.id))
 
-@bot.command(name='cute',
-             description="Envoie une photo d'un animal mignon.",
-             brief="Fais le plein de mignonitude !")
-async def cute():
-    #await bot.say("image")
-    dir_fd = os.open('pic', os.O_RDONLY)
-    def opener(path, flags):
-        return os.open(path, flags, dir_fd=dir_fd)
-    liste=os.listdir("/pic")
-    image=random.choice(liste)
-    with open(image, 'rb', opener=opener) as f:
-        await bot.send_file(discord.Channel, f)
-    os.close(dir_fd) 
-    #await bot.say(random.randrange(100))
+
+@bot.command(pass_context=True,
+             name='cute',
+             description="Envoie une photo au hasard parmis le dossier ./pic",
+             brief="Envoie une photo d'animal",
+             aliases=['mignon', 'animal'])
+async def cute(ctx):
+    l = os.listdir("./pic")
+    img = random.choice(l)
+    with open("./pic/" + img, 'rb') as f:
+        await bot.send_file(ctx.message.channel, f)
 
 
 @bot.command(name='ping',
@@ -42,9 +41,9 @@ async def ping():
 
 
 @bot.command(name='8ball',
-             description="Répond à une question en oui ou non.",
+             description="Répond à une question en oui ou non au hasard.",
              brief="Laisse l'univers décider.",
-             aliases=['eight_ball', 'eightball', '8-ball'])
+             aliases=['eight_ball', 'eightball', '8-ball', 'reponse', 'réponse'])
 async def eight_ball():
     possible_resp = [
         'Essaye plus tard',
