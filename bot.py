@@ -8,9 +8,11 @@ import asyncio
 from tokens import token
 import os
 
-#client = discord.Client()
+description = '''Simple bot avec quelques commandes.'''
+
+client = discord.Client()
 bot_prefix=("!", "?")
-bot = Bot(command_prefix=bot_prefix)
+bot = Bot(command_prefix=bot_prefix, description=description)
 
 
 #Message dans le terminal quand on lance le bot
@@ -31,8 +33,8 @@ async def cute(ctx):
     img = random.choice(l)
     with open("./pic/" + img, 'rb') as f:
         await bot.send_file(ctx.message.channel, f)
-        
-        
+
+
 @bot.command(pass_context=True,
              name='joke',
              description="Envoie une ligne au hasard parmis le fichier joke.txt",
@@ -43,13 +45,26 @@ async def joke(ctx):
     with open('joke.txt', 'r') as f :
         for l in f.readlines() :
             liste.append(l)
-        f.close()
     l = random.choice(liste)
     await bot.say(l)
 
 
+@bot.command(name='roll',
+             description="Lance x dés n sous la forme XdN",
+             brief="Lance les dés",
+             aliases=['dés', 'dé'])
+async def roll(dice : str):
+    try:
+        rolls, limit = map(int, dice.split('d'))
+    except Exception:
+        await bot.say('Le format est XdN avec X, N des entiers !')
+        return
+    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+    await bot.say(result)
+
+
 @bot.command(name='ping',
-             description="Envoie ping",
+             description="Envoie pong.",
              brief="Ping pong")
 async def ping():
     await bot.say("Pong !")
@@ -83,6 +98,14 @@ async def eight_ball():
         'Impossible'
     ]
     await bot.say(random.choice(possible_resp))
+
+
+@bot.command(name='choix',
+             description="Choisit une des options. Utilisation : pool choix1 ... choixn",
+             brief="Choisit à ta place.",
+             aliases=['choisir', 'options', 'choose'])
+async def choix(*choices : str):
+    await bot.say(random.choice(choices))
 
 
 bot.run(token);
