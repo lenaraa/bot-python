@@ -52,14 +52,20 @@ async def joke(ctx):
 @bot.command(name='roll',
              description="Lance x dés n sous la forme XdN",
              brief="Lance les dés",
-             aliases=['dés', 'dé'])
+             aliases=['dés', 'dé', 'dice'])
 async def roll(dice : str):
     try:
         rolls, limit = map(int, dice.split('d'))
+        if rolls <= 0 or limit <= 0:
+            raise ValueError("negative")
     except Exception:
-        await bot.say('Le format est XdN avec X, N des entiers !')
+        await bot.say('Le format est XdN avec X, N des entiers strictement positifs !')
         return
-    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+    l = list(map(lambda _:random.randint(1,limit), range(rolls)))
+    s = sum(l)
+    result = ', '.join(map(str, l))
+    if rolls > 1 :
+        result = result+' ='+ str(s)
     await bot.say(result)
 
 
